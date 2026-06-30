@@ -82,9 +82,49 @@
             color: #9ca3af;
             pointer-events: none;
         }
+
+        #entry-splash {
+            animation: splashAppear 0.65s ease both;
+        }
+
+        #entry-splash.is-hiding {
+            animation: splashDisappear 0.7s ease forwards;
+        }
+
+        @keyframes splashAppear {
+            from {
+                opacity: 0;
+                transform: scale(1.01);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes splashDisappear {
+            to {
+                opacity: 0;
+                transform: scale(0.99);
+                visibility: hidden;
+            }
+        }
     </style>
 </head>
 <body class="bg-ivory-100 text-ivory-900 dark:bg-obsidian-200 dark:text-obsidian-900 font-serif theme-transition min-h-screen flex flex-col antialiased pb-24">
+
+    <div id="entry-splash" class="fixed inset-0 z-[12000] bg-ivory-100/95 dark:bg-obsidian-200/95 backdrop-blur-[2px] flex items-center justify-center px-8">
+        <div class="text-center">
+            <h2 class="font-serif text-3xl md:text-4xl font-light tracking-wide leading-relaxed hangul-serif mb-6 text-neutral-800 dark:text-neutral-200">
+                흘러가는 생각들과<br>못다 한 새벽의 기록들.
+            </h2>
+            <p class="font-serif text-sm md:text-base text-neutral-400 dark:text-neutral-500 leading-loose max-w-xl hangul-serif">
+                이름을 잃어버린 사소한 일상 속에서 건져 올린 시선과 문장들입니다.<br>
+                오직 정서와 활자가 그리는 작은 여백에 귀 기울여 주시길 바랍니다.
+            </p>
+        </div>
+        <div id="entry-splash-countdown" class="absolute bottom-10 left-1/2 -translate-x-1/2 font-mono text-base md:text-lg tracking-[0.2em] text-neutral-500 dark:text-neutral-400 select-none" aria-live="polite" style="color: #00000029; font-size: 1.65rem;">3</div>
+    </div>
 
     <!-- 상단 헤더: 작가 정체성 및 소통 채널 연결 -->
     <header class="border-b border-ivory-200 dark:border-obsidian-50 py-8 px-6 md:px-12 lg:px-24 theme-transition sticky top-0 bg-ivory-100/90 dark:bg-obsidian-200/90 backdrop-blur-md z-30">
@@ -142,17 +182,6 @@
     <!-- 메인 레이아웃 본문 -->
     <main class="flex-grow max-w-4xl mx-auto w-full px-6 md:px-12 py-12 md:py-20 flex flex-col justify-start">
         
-        <!-- 작가 소개 및 타이틀 영역 -->
-        <section class="mb-16 md:mb-24 text-center sm:text-left">
-            <h2 class="font-serif text-3xl md:text-4xl font-light tracking-wide leading-relaxed hangul-serif mb-6 text-neutral-800 dark:text-neutral-200">
-                흘러가는 생각들과<br>못다 한 새벽의 기록들.
-            </h2>
-            <p class="font-serif text-sm md:text-base text-neutral-400 dark:text-neutral-500 leading-loose max-w-xl hangul-serif">
-                이름을 잃어버린 사소한 일상 속에서 건져 올린 시선과 문장들입니다.<br>
-                오직 정서와 활자가 그리는 작은 여백에 귀 기울여 주시길 바랍니다.
-            </p>
-        </section>
-
         <!-- 태그 필터 영역 -->
         <section class="mb-12 border-b border-ivory-200 dark:border-obsidian-50 pb-6 theme-transition">
             <div class="flex flex-wrap gap-2 md:gap-3 items-center text-sm">
@@ -200,12 +229,17 @@
             <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
 
             <!-- 모달창 실제 몸체 -->
-            <div id="modal-content" class="inline-block w-full h-screen max-h-screen my-0 overflow-hidden text-left align-middle transition-all transform bg-ivory-50 dark:bg-obsidian-100 shadow-2xl rounded-none border-0 text-ivory-900 dark:text-obsidian-900 sm:h-auto sm:max-h-none sm:max-w-2xl sm:my-8 sm:rounded-2xl sm:border sm:border-ivory-200 sm:dark:border-obsidian-50">
+            <div id="modal-content" class="inline-block w-full h-screen max-h-screen my-1 overflow-hidden text-left align-middle transition-all transform bg-ivory-50 dark:bg-obsidian-100 shadow-2xl rounded-none border-0 text-ivory-900 dark:text-obsidian-900 sm:h-auto sm:max-h-none sm:max-w-2xl sm:my-8 sm:rounded-2xl sm:border sm:border-ivory-200 sm:dark:border-obsidian-50">
                 
                 <!-- 상단 헤더: 닫기 버튼 및 미니멀 장식 -->
                 <div class="flex justify-between items-center px-6 py-4 border-b border-ivory-200/50 dark:border-obsidian-50/50">
                     <span class="text-xs tracking-[0.2em] font-mono text-neutral-400 uppercase">Archive No. <span id="modal-index">01</span></span>
                     <div class="flex items-center gap-1.5 relative">
+                        <button id="modal-edit-btn" onclick="startEditCurrentPoem()" class="p-1.5 text-neutral-500 hover:text-ivory-900 dark:hover:text-obsidian-900 transition-colors" aria-label="이 게시물 수정" title="이 게시물 수정">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487a2.1 2.1 0 113 2.968L8.25 19.067 4 20l.933-4.25 11.929-11.263z"></path>
+                            </svg>
+                        </button>
                         <button id="modal-bg-toggle-modal" class="p-1.5 text-neutral-500 focus:outline-none" aria-label="게시물 모달 배경색 설정" title="게시물 모달 배경색 설정">
                             <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
                                 <circle id="modal-bg-toggle-circle-modal" cx="12" cy="12" r="8" stroke="#737373" stroke-width="1.5" fill="#fcfbfa"></circle>
@@ -227,7 +261,7 @@
                 </div>
 
                 <!-- 시 상세 내용 본문 영역 -->
-                <div class="px-6 py-10 md:px-12 md:py-16 max-h-[calc(100vh-72px)] sm:max-h-[75vh] overflow-y-auto">
+                <div class="px-6 py-10 md:px-12 md:py-16 max-h-[calc(100vh-72px)] sm:max-h-[82vh] overflow-y-auto">
                     <!-- 제목 및 정보 -->
                     <div class="text-center mb-12">
                         <h3 id="modal-title-text" class="font-serif text-2xl md:text-3xl font-bold tracking-wide hangul-serif mb-4">
@@ -365,25 +399,33 @@
                 </div>
 
                 <div id="admin-panel-area" class="hidden space-y-6">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <input type="text" id="admin-title" placeholder="제목" class="w-full bg-transparent border border-neutral-300 dark:border-neutral-700 rounded-lg p-2.5 text-xs focus:outline-none focus:border-neutral-900 dark:focus:border-neutral-100">
-                        <div class="grid grid-cols-2 gap-2">
-                            <input type="date" id="admin-datetime-date" class="w-full bg-transparent border border-neutral-300 dark:border-neutral-700 rounded-lg p-2.5 text-xs focus:outline-none focus:border-neutral-900 dark:focus:border-neutral-100">
-                            <input type="time" id="admin-datetime-time" step="60" class="w-full bg-transparent border border-neutral-300 dark:border-neutral-700 rounded-lg p-2.5 text-xs focus:outline-none focus:border-neutral-900 dark:focus:border-neutral-100">
-                        </div>
-                        <input type="text" id="admin-tags" placeholder="태그 (쉼표 구분)" class="w-full bg-transparent border border-neutral-300 dark:border-neutral-700 rounded-lg p-2.5 text-xs focus:outline-none focus:border-neutral-900 dark:focus:border-neutral-100">
-                        <input type="text" id="admin-instagram-link" placeholder="인스타링크" class="w-full bg-transparent border border-neutral-300 dark:border-neutral-700 rounded-lg p-2.5 text-xs focus:outline-none focus:border-neutral-900 dark:focus:border-neutral-100">
-                        <label class="md:col-span-2 flex items-center gap-2 text-xs text-neutral-600 dark:text-neutral-400 font-mono">
-                            <input type="checkbox" id="admin-published" class="rounded border-neutral-300 dark:border-neutral-700" checked>
-                            공개 게시물
-                        </label>
-                        <div id="admin-body-editor" contenteditable="true" class="md:col-span-2 w-full min-h-[180px] bg-transparent border border-neutral-300 dark:border-neutral-700 rounded-lg p-2.5 text-xs leading-relaxed focus:outline-none focus:border-neutral-900 dark:focus:border-neutral-100 text-left whitespace-pre-wrap" data-placeholder="본문"></div>
-                        <textarea id="admin-commentary" placeholder="작가코멘트" rows="4" class="md:col-span-2 w-full bg-transparent border border-neutral-300 dark:border-neutral-700 rounded-lg p-2.5 text-xs focus:outline-none focus:border-neutral-900 dark:focus:border-neutral-100"></textarea>
+                    <div class="flex items-center justify-between gap-2">
+                        <p class="text-xs text-neutral-500 dark:text-neutral-400 font-mono">게시물 관리</p>
+                        <button id="admin-compose-btn" onclick="openAdminComposer()" class="bg-ivory-900 dark:bg-obsidian-900 text-ivory-100 dark:text-obsidian-200 hover:opacity-90 px-3 py-1.5 rounded-lg text-xs font-mono">글쓰기</button>
                     </div>
 
-                    <div class="flex flex-wrap gap-2">
-                        <button id="admin-save-btn" onclick="saveAdminPost()" class="bg-ivory-900 dark:bg-obsidian-900 text-ivory-100 dark:text-obsidian-200 hover:opacity-90 px-4 py-2 rounded-lg text-xs font-mono">저장</button>
-                        <button onclick="resetAdminForm()" class="bg-transparent border border-neutral-300 dark:border-neutral-700 hover:border-neutral-900 dark:hover:border-neutral-100 px-4 py-2 rounded-lg text-xs font-mono">입력 초기화</button>
+                    <div id="admin-editor-section" class="hidden space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <input type="text" id="admin-title" placeholder="제목" class="w-full bg-transparent border border-neutral-300 dark:border-neutral-700 rounded-lg p-2.5 text-xs focus:outline-none focus:border-neutral-900 dark:focus:border-neutral-100">
+                            <div class="grid grid-cols-2 gap-2">
+                                <input type="date" id="admin-datetime-date" class="w-full bg-transparent border border-neutral-300 dark:border-neutral-700 rounded-lg p-2.5 text-xs focus:outline-none focus:border-neutral-900 dark:focus:border-neutral-100">
+                                <input type="time" id="admin-datetime-time" step="60" class="w-full bg-transparent border border-neutral-300 dark:border-neutral-700 rounded-lg p-2.5 text-xs focus:outline-none focus:border-neutral-900 dark:focus:border-neutral-100">
+                            </div>
+                            <input type="text" id="admin-tags" placeholder="태그 (쉼표 구분)" class="w-full bg-transparent border border-neutral-300 dark:border-neutral-700 rounded-lg p-2.5 text-xs focus:outline-none focus:border-neutral-900 dark:focus:border-neutral-100">
+                            <input type="text" id="admin-instagram-link" placeholder="인스타링크" class="w-full bg-transparent border border-neutral-300 dark:border-neutral-700 rounded-lg p-2.5 text-xs focus:outline-none focus:border-neutral-900 dark:focus:border-neutral-100">
+                            <label class="md:col-span-2 flex items-center gap-2 text-xs text-neutral-600 dark:text-neutral-400 font-mono">
+                                <input type="checkbox" id="admin-published" class="rounded border-neutral-300 dark:border-neutral-700" checked>
+                                공개 게시물
+                            </label>
+                            <div id="admin-body-editor" contenteditable="true" class="md:col-span-2 w-full min-h-[180px] bg-transparent border border-neutral-300 dark:border-neutral-700 rounded-lg p-2.5 text-xs leading-relaxed focus:outline-none focus:border-neutral-900 dark:focus:border-neutral-100 text-left whitespace-pre-wrap" data-placeholder="본문"></div>
+                            <textarea id="admin-commentary" placeholder="작가코멘트" rows="4" class="md:col-span-2 w-full bg-transparent border border-neutral-300 dark:border-neutral-700 rounded-lg p-2.5 text-xs focus:outline-none focus:border-neutral-900 dark:focus:border-neutral-100"></textarea>
+                        </div>
+
+                        <div class="flex flex-wrap gap-2">
+                            <button id="admin-save-btn" onclick="saveAdminPost()" class="bg-ivory-900 dark:bg-obsidian-900 text-ivory-100 dark:text-obsidian-200 hover:opacity-90 px-4 py-2 rounded-lg text-xs font-mono">저장</button>
+                            <button onclick="resetAdminForm()" class="bg-transparent border border-neutral-300 dark:border-neutral-700 hover:border-neutral-900 dark:hover:border-neutral-100 px-4 py-2 rounded-lg text-xs font-mono">입력 초기화</button>
+                            <button onclick="closeAdminEditorSection()" class="ml-auto bg-transparent border border-neutral-300 dark:border-neutral-700 hover:border-neutral-900 dark:hover:border-neutral-100 px-4 py-2 rounded-lg text-xs font-mono">닫기</button>
+                        </div>
                     </div>
 
                     <div class="border-t border-ivory-200 dark:border-obsidian-50 pt-4">
@@ -460,11 +502,14 @@
         let isAdminPasswordVisible = false;
         let adminDraggedRowId = null;
         let isSavingAdminPost = false;
+        let pendingEditRowId = null;
 
         const DEFAULT_APPS_SCRIPT_URL = (window.APP_CONFIG && window.APP_CONFIG.APPS_SCRIPT_URL) || '';
         const APPS_SCRIPT_URL_KEY = 'apps-script-url';
         const MODAL_BG_COLOR_KEY = 'poem-modal-bg-color';
         const MODAL_BG_DEFAULT = '#fcfbfa';
+        const ENTRY_SPLASH_DURATION_MS = 3000;
+        const ENTRY_SPLASH_HIDE_DURATION_MS = 700;
 
         window.addEventListener('DOMContentLoaded', () => {
             initTheme();
@@ -498,7 +543,41 @@
             applyModalBackgroundFromStorage();
             initScrollTopButton();
             initAdminEditorToolbar();
+            initEntrySplash();
         });
+
+        function initEntrySplash() {
+            const splash = document.getElementById('entry-splash');
+            const countdownEl = document.getElementById('entry-splash-countdown');
+            if (!splash) return;
+
+            const totalSeconds = Math.max(1, Math.ceil(ENTRY_SPLASH_DURATION_MS / 1000));
+            const renderCountdown = (secondsLeft) => {
+                if (!countdownEl) return;
+                countdownEl.textContent = String(Math.max(1, secondsLeft));
+            };
+
+            renderCountdown(totalSeconds);
+
+            if (countdownEl) {
+                let secondsLeft = totalSeconds;
+                const countdownTimer = setInterval(() => {
+                    secondsLeft -= 1;
+                    if (secondsLeft <= 0) {
+                        clearInterval(countdownTimer);
+                        return;
+                    }
+                    renderCountdown(secondsLeft);
+                }, 1000);
+            }
+
+            setTimeout(() => {
+                splash.classList.add('is-hiding');
+                setTimeout(() => {
+                    splash.classList.add('hidden');
+                }, ENTRY_SPLASH_HIDE_DURATION_MS);
+            }, ENTRY_SPLASH_DURATION_MS);
+        }
 
         function initScrollTopButton() {
             updateScrollTopButtonVisibility();
@@ -671,8 +750,7 @@
             const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
             const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
 
-            if (localStorage.getItem('color-theme') === 'dark' ||
-                (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            if (localStorage.getItem('color-theme') === 'dark') {
                 document.documentElement.classList.add('dark');
                 themeToggleLightIcon.classList.remove('hidden');
             } else {
@@ -797,6 +875,29 @@
             return sanitizeStoredText(container.innerText || container.textContent || '');
         }
 
+        function parseTags(value) {
+            return String(value || '')
+                .split(',')
+                .map((tag) => tag.trim())
+                .filter(Boolean);
+        }
+
+        function getTeaserTextFromBody(bodyHtml) {
+            const safeHtml = sanitizeBodyHtml(bodyHtml || '');
+            if (!safeHtml) return '';
+
+            const spacedHtml = safeHtml
+                .replace(/<br\s*\/?>/gi, ' ')
+                .replace(/<\/(div|p)>/gi, ' ')
+                .replace(/<(div|p)(\s[^>]*)?>/gi, ' ');
+
+            const container = document.createElement('div');
+            container.innerHTML = spacedHtml;
+            return String(container.textContent || '')
+                .replace(/\s+/g, ' ')
+                .trim();
+        }
+
         function normalizePoemSchema(poem) {
             const body = sanitizeBodyHtml(poem.본문 || '');
             return {
@@ -804,7 +905,7 @@
                 제목: poem.제목 || '제목 없음',
                 본문: body,
                 본문Plain: getPlainTextForSearch(body),
-                태그: poem.태그 || '기타',
+                태그: String(poem.태그 || '').trim(),
                 제작일시: poem.제작일시 || '',
                 작가코멘트: poem.작가코멘트 || '',
                 인스타링크: poem.인스타링크 || '',
@@ -906,9 +1007,8 @@
         function buildTagFilterUI() {
             const allTags = new Set();
             getVisiblePoems().forEach((p) => {
-                p.태그.split(',').forEach((tag) => {
-                    const trimmed = tag.trim();
-                    if (trimmed) allTags.add('#' + trimmed);
+                parseTags(p.태그).forEach((tag) => {
+                    allTags.add('#' + tag);
                 });
             });
 
@@ -951,7 +1051,7 @@
                 let tagMatch = currentSelectedTag === '전체보기';
                 if (!tagMatch) {
                     const searchTag = currentSelectedTag.replace('#', '').trim();
-                    const poemTags = poem.태그.split(',').map((t) => t.trim());
+                    const poemTags = parseTags(poem.태그);
                     tagMatch = poemTags.includes(searchTag);
                 }
 
@@ -979,7 +1079,8 @@
             filtered.forEach((poem) => {
                 const originalIndex = poemsData.findIndex((p) => p.rowId === poem.rowId);
                 const displayNo = String(Math.max(0, originalIndex) + 1).padStart(2, '0');
-                const teaserText = poem.본문Plain.split('\n')[0] || '';
+                const teaserText = getTeaserTextFromBody(poem.본문) || poem.본문Plain.split('\n')[0] || '';
+                const tags = parseTags(poem.태그);
 
                 const card = document.createElement('div');
                 card.className = 'group border-b border-ivory-200/50 dark:border-obsidian-50/50 pb-6 cursor-pointer transition-opacity duration-300 hover:opacity-85';
@@ -995,14 +1096,14 @@
                         </div>
                         <span class="text-xs font-mono text-neutral-400 dark:text-neutral-500">${formatDateOnly(poem.제작일시)}</span>
                     </div>
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mt-2 pl-7">
+                    <div class="flex flex-col gap-2 mt-2 pl-7">
                         <p class="font-serif text-sm text-neutral-500 dark:text-neutral-400 italic tracking-wide line-clamp-1 leading-relaxed">
                             "${teaserText}..."
                         </p>
-                        <div class="flex flex-wrap gap-1 mt-1 sm:mt-0">
-                            ${poem.태그.split(',').map((t) => `
+                        <div class="flex flex-wrap gap-1 mt-1">
+                            ${tags.map((t) => `
                                 <span class="text-[10px] tracking-wider px-2 py-0.5 rounded-full bg-ivory-200 dark:bg-obsidian-50/50 text-neutral-500 dark:text-neutral-400 font-mono">
-                                    #${t.trim()}
+                                    #${t}
                                 </span>
                             `).join('')}
                         </div>
@@ -1024,6 +1125,8 @@
         }
 
         let currentOpenIndex = -1;
+        let currentOpenRowId = null;
+        let isPoemModalHistoryPushed = false;
 
         function escapeHtml(text) {
             return String(text || '')
@@ -1034,16 +1137,42 @@
                 .replace(/'/g, '&#39;');
         }
 
-        function renderPoemBodyWithLines(bodyText) {
-            const normalized = String(bodyText || '').replace(/\r\n?/g, '\n');
-            const lines = normalized.split('\n');
-            if (!lines.length) lines.push('');
+        function renderPoemBodyWithLines(bodyHtml) {
+            const safeHtml = sanitizeBodyHtml(bodyHtml || '');
+            const container = document.createElement('div');
+            container.innerHTML = safeHtml;
 
-            return lines.map((line) => {
-                const content = line.length ? escapeHtml(line) : '&nbsp;';
+            const lines = [];
+            const blockNodes = Array.from(container.children).filter((node) => {
+                const tag = node.tagName.toLowerCase();
+                return tag === 'div' || tag === 'p';
+            });
+
+            if (blockNodes.length) {
+                blockNodes.forEach((node) => {
+                    const raw = String(node.innerHTML || '').trim();
+                    const textOnly = String(node.textContent || '').replace(/\u00a0/g, ' ').trim();
+                    if (!textOnly || raw === '<br>' || raw === '<br/>') {
+                        lines.push('&nbsp;');
+                    } else {
+                        lines.push(raw);
+                    }
+                });
+            } else {
+                const normalized = (container.textContent || '').replace(/\r\n?/g, '\n');
+                const split = normalized.split('\n');
+                split.forEach((line) => {
+                    const text = line.trim();
+                    lines.push(text ? escapeHtml(line) : '&nbsp;');
+                });
+            }
+
+            if (!lines.length) lines.push('&nbsp;');
+
+            return lines.map((lineHtml) => {
                 return `
                     <div class="min-h-[2.1em] border-b border-neutral-300/80 dark:border-neutral-600/70 px-2 flex items-center justify-center">
-                        <span class="whitespace-pre-wrap break-words w-full">${content}</span>
+                        <span class="whitespace-pre-wrap break-words w-full">${lineHtml}</span>
                     </div>
                 `;
             }).join('');
@@ -1053,31 +1182,67 @@
             currentOpenIndex = index;
             const poem = poemsData[index];
             if (!poem) return;
+            currentOpenRowId = poem.rowId ? Number(poem.rowId) : null;
 
             document.getElementById('modal-index').textContent = String(index + 1).padStart(2, '0');
             document.getElementById('modal-title-text').textContent = poem.제목;
-            document.getElementById('modal-poem-body').innerHTML = renderPoemBodyWithLines(poem.본문Plain);
+            document.getElementById('modal-poem-body').innerHTML = renderPoemBodyWithLines(poem.본문);
             document.getElementById('modal-date').textContent = formatDateOnly(poem.제작일시);
             document.getElementById('modal-commentary').textContent = poem.작가코멘트 || '시인의 특별한 코멘트가 기록되지 않았습니다.';
 
             const tagsContainer = document.getElementById('modal-tags');
-            tagsContainer.innerHTML = poem.태그.split(',').map((t) => `
+            const tags = parseTags(poem.태그);
+            tagsContainer.innerHTML = tags.map((t) => `
                 <span class="text-xs font-serif text-neutral-400 dark:text-neutral-500 font-mono italic">
-                    #${t.trim()}
+                    #${t}
                 </span>
             `).join(' ');
 
             document.getElementById('poem-modal').classList.remove('hidden');
             document.body.style.overflow = 'hidden';
+
+            if (!isPoemModalHistoryPushed) {
+                history.pushState({ ...(history.state || {}), poemModalOpen: true }, '');
+                isPoemModalHistoryPushed = true;
+            }
         }
 
-        function closeModal() {
+        function isPoemModalOpen() {
+            const modal = document.getElementById('poem-modal');
+            return !!modal && !modal.classList.contains('hidden');
+        }
+
+        function closeModal(options = {}) {
+            const { fromPopState = false } = options;
+            if (!isPoemModalOpen()) return;
+
             document.getElementById('poem-modal').classList.add('hidden');
             document.body.style.overflow = '';
             currentOpenIndex = -1;
+            currentOpenRowId = null;
+
+            if (isPoemModalHistoryPushed && !fromPopState) {
+                isPoemModalHistoryPushed = false;
+                history.back();
+                return;
+            }
+
+            isPoemModalHistoryPushed = false;
         }
 
         document.getElementById('modal-overlay').addEventListener('click', closeModal);
+
+        window.addEventListener('popstate', () => {
+            if (isPoemModalOpen()) {
+                closeModal({ fromPopState: true });
+            }
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && isPoemModalOpen()) {
+                closeModal();
+            }
+        });
 
         function showToast(message) {
             const toast = document.getElementById('toast-message');
@@ -1118,6 +1283,12 @@
             }
             renderAdminPanelState();
             updateAdminEditorToolbarPosition();
+            if (!isAdminLoggedIn) {
+                setTimeout(() => {
+                    const passwordInput = document.getElementById('admin-password-input');
+                    if (passwordInput) passwordInput.focus();
+                }, 0);
+            }
         }
 
         async function renderAdminPanelState() {
@@ -1125,12 +1296,24 @@
             document.getElementById('admin-panel-area').classList.toggle('hidden', !isAdminLoggedIn);
             document.getElementById('admin-header-logout-btn').classList.toggle('hidden', !isAdminLoggedIn);
             if (!isAdminLoggedIn) {
+                setAdminEditorSectionVisible(false);
                 hideAdminEditorToolbar();
             }
             if (isAdminLoggedIn) {
                 try {
                     await loadAllPoemsForAdmin();
                     renderAdminPostList();
+                    if (pendingEditRowId) {
+                        const targetIndex = poemsData.findIndex((item) => Number(item.rowId) === Number(pendingEditRowId));
+                        pendingEditRowId = null;
+                        if (targetIndex > -1) {
+                            editAdminPost(targetIndex);
+                        } else {
+                            showToast('수정할 게시물을 찾지 못했습니다.');
+                        }
+                    } else {
+                        setAdminEditorSectionVisible(false);
+                    }
                 } catch (error) {
                     showToast('관리자 데이터 로드 실패');
                 }
@@ -1162,10 +1345,53 @@
             adminSessionPassword = '';
             adminEditingIndex = -1;
             isAdminPasswordVisible = false;
+            pendingEditRowId = null;
             resetAdminForm();
+            setAdminEditorSectionVisible(false);
             syncAdminPasswordToggleUI();
             renderAdminPanelState();
             showToast('로그아웃되었습니다.');
+        }
+
+        function setAdminEditorSectionVisible(visible) {
+            const section = document.getElementById('admin-editor-section');
+            if (!section) return;
+            section.classList.toggle('hidden', !visible);
+            if (!visible) {
+                hideAdminEditorToolbar();
+            }
+        }
+
+        function openAdminComposer() {
+            adminEditingIndex = -1;
+            resetAdminForm();
+            setAdminEditorSectionVisible(true);
+            showAdminEditorToolbar();
+        }
+
+        function closeAdminEditorSection() {
+            resetAdminForm();
+            setAdminEditorSectionVisible(false);
+        }
+
+        function startEditCurrentPoem() {
+            if (currentOpenRowId == null) return;
+
+            const targetRowId = Number(currentOpenRowId);
+            pendingEditRowId = targetRowId;
+            closeModal();
+
+            const adminModal = document.getElementById('admin-modal');
+            if (adminModal && adminModal.classList.contains('hidden')) {
+                toggleAdminModal();
+            }
+
+            if (!isAdminLoggedIn) {
+                showToast('관리자 로그인 후 수정할 수 있습니다.');
+                return;
+            }
+
+            renderAdminPanelState();
         }
 
         function getAdminFormData() {
@@ -1227,6 +1453,7 @@
         function editAdminPost(index) {
             const poem = normalizePoemSchema(poemsData[index]);
             adminEditingIndex = index;
+            setAdminEditorSectionVisible(true);
             document.getElementById('admin-title').value = poem.제목;
             setAdminBodyEditorContent(poem.본문);
             document.getElementById('admin-tags').value = poem.태그;
@@ -1309,7 +1536,28 @@
             }
         }
 
-        async function reorderAdminPostByRowIds(sourceRowId, targetRowId) {
+        function clearAdminDropIndicators(exceptElement = null) {
+            const items = document.querySelectorAll('#admin-post-list > div');
+            items.forEach((item) => {
+                if (exceptElement && item === exceptElement) return;
+                item.classList.remove(
+                    'ring-1',
+                    'ring-neutral-400',
+                    'dark:ring-neutral-500',
+                    'pt-5',
+                    'pb-5',
+                    'border-t-2',
+                    'border-b-2',
+                    'border-neutral-500',
+                    'dark:border-neutral-400'
+                );
+                delete item.dataset.dropPosition;
+            });
+        }
+
+        async function reorderAdminPostByRowIds(sourceRowId, targetRowId, dropPosition = 'before') {
+            if (!isAdminLoggedIn || isSavingAdminPost) return;
+
             const source = Number(sourceRowId);
             const target = Number(targetRowId);
             if (!source || !target || source === target) return;
@@ -1319,10 +1567,16 @@
             const targetIndex = moved.findIndex((item) => Number(item.rowId) === target);
             if (sourceIndex < 0 || targetIndex < 0) return;
 
+            let insertionIndex = targetIndex + (dropPosition === 'after' ? 1 : 0);
+            if (sourceIndex < insertionIndex) insertionIndex -= 1;
+            if (sourceIndex === insertionIndex) return;
+
             const [dragged] = moved.splice(sourceIndex, 1);
-            moved.splice(targetIndex, 0, dragged);
+            moved.splice(Math.max(0, Math.min(insertionIndex, moved.length)), 0, dragged);
             const orders = moved.map((item, idx) => ({ rowId: item.rowId, order: idx + 1 }));
 
+            isSavingAdminPost = true;
+            setAdminSaveLoading(true);
             try {
                 await callApi('reorder', { orders }, { withPassword: true });
                 await loadAllPoemsForAdmin();
@@ -1330,11 +1584,15 @@
                 showToast('순서가 변경되었습니다.');
             } catch (error) {
                 showToast('순서 변경 실패: 권한 또는 서버 설정을 확인하세요.');
+            } finally {
+                isSavingAdminPost = false;
+                setAdminSaveLoading(false);
             }
         }
 
         function handleAdminDragStart(rowId, event) {
             adminDraggedRowId = Number(rowId);
+            clearAdminDropIndicators();
             if (event.dataTransfer) {
                 event.dataTransfer.effectAllowed = 'move';
                 event.dataTransfer.setData('text/plain', String(rowId));
@@ -1346,22 +1604,40 @@
             if (event.dataTransfer) {
                 event.dataTransfer.dropEffect = 'move';
             }
-            event.currentTarget.classList.add('ring-1', 'ring-neutral-400', 'dark:ring-neutral-500');
+
+            const target = event.currentTarget;
+            const rect = target.getBoundingClientRect();
+            const isAfter = event.clientY > rect.top + rect.height / 2;
+
+            clearAdminDropIndicators(target);
+            target.classList.add('ring-1', 'ring-neutral-400', 'dark:ring-neutral-500');
+            target.dataset.dropPosition = isAfter ? 'after' : 'before';
+
+            if (isAfter) {
+                target.classList.add('pb-5', 'border-b-2', 'border-neutral-500', 'dark:border-neutral-400');
+                target.classList.remove('pt-5', 'border-t-2');
+            } else {
+                target.classList.add('pt-5', 'border-t-2', 'border-neutral-500', 'dark:border-neutral-400');
+                target.classList.remove('pb-5', 'border-b-2');
+            }
         }
 
         function handleAdminDragLeave(event) {
-            event.currentTarget.classList.remove('ring-1', 'ring-neutral-400', 'dark:ring-neutral-500');
+            const related = event.relatedTarget;
+            if (related && event.currentTarget.contains(related)) return;
+            clearAdminDropIndicators();
         }
 
         async function handleAdminDrop(targetRowId, event) {
             event.preventDefault();
-            event.currentTarget.classList.remove('ring-1', 'ring-neutral-400', 'dark:ring-neutral-500');
+            const dropPosition = event.currentTarget.dataset.dropPosition === 'after' ? 'after' : 'before';
+            clearAdminDropIndicators();
 
             const transferred = event.dataTransfer ? event.dataTransfer.getData('text/plain') : '';
             const sourceRowId = Number(transferred || adminDraggedRowId);
             adminDraggedRowId = null;
 
-            await reorderAdminPostByRowIds(sourceRowId, targetRowId);
+            await reorderAdminPostByRowIds(sourceRowId, targetRowId, dropPosition);
         }
 
         async function toggleAdminPublish(index) {
@@ -1389,7 +1665,7 @@
             list.innerHTML = poemsData.map((poem, index) => {
                 const status = normalizePublishValue(poem.공개여부);
                 return `
-                    <div class="border border-ivory-200 dark:border-obsidian-50 rounded-lg p-3 flex items-start gap-3 transition-shadow cursor-pointer" onclick="editAdminPost(${index})" ondragover="handleAdminDragOver(event)" ondragleave="handleAdminDragLeave(event)" ondrop="handleAdminDrop(${poem.rowId}, event)">
+                    <div class="border border-ivory-200 dark:border-obsidian-50 rounded-lg p-3 flex items-start gap-3 transition-all duration-150 cursor-pointer" onclick="editAdminPost(${index})" ondragover="handleAdminDragOver(event)" ondragleave="handleAdminDragLeave(event)" ondrop="handleAdminDrop(${poem.rowId}, event)">
                         <button type="button" draggable="true" onclick="event.stopPropagation();" ondragstart="handleAdminDragStart(${poem.rowId}, event)" class="mt-0.5 shrink-0 p-1 text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200 cursor-grab active:cursor-grabbing" title="드래그하여 순서 변경" aria-label="드래그하여 순서 변경">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" d="M9 6h.01M9 12h.01M9 18h.01M15 6h.01M15 12h.01M15 18h.01"></path>
@@ -1403,7 +1679,7 @@
                             </div>
                                 <div class="shrink-0 flex items-center gap-1.5">
                                     <button type="button" onclick="event.stopPropagation();toggleAdminPublish(${index});" class="text-[10px] px-2 py-0.5 rounded-full ${status === '공개' ? 'bg-emerald-100 text-emerald-700' : 'bg-neutral-200 text-neutral-600 dark:bg-neutral-700 dark:text-neutral-300'} font-mono" title="클릭하여 공개여부 전환">${status}</button>
-                                    <button onclick="event.stopPropagation();deleteAdminPost(${index});" class="px-2 py-1 text-[10px] border border-red-400 text-red-500 rounded">삭제</button>
+                                    <button onclick="event.stopPropagation();deleteAdminPost(${index});" class="px-2 py-1 text-[10px] text-red-500 rounded">삭제</button>
                                 </div>
                             </div>
                         </div>
