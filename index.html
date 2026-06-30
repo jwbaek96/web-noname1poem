@@ -143,20 +143,6 @@
 
             <!-- 우측 제어 메뉴: 낮/밤 토글 및 인스타그램 -->
             <div class="flex items-center space-x-4 md:space-x-6">
-                <div class="relative">
-                    <button id="modal-bg-toggle" class="p-2 text-neutral-500 focus:outline-none" aria-label="게시물 모달 배경색 설정" title="게시물 모달 배경색 설정">
-                        <svg id="modal-bg-toggle-icon" class="w-5 h-5" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
-                            <circle id="modal-bg-toggle-circle" cx="12" cy="12" r="8" stroke="#737373" stroke-width="1.5" fill="#fcfbfa"></circle>
-                        </svg>
-                    </button>
-                    <div id="modal-bg-panel" class="hidden absolute right-0 mt-2 w-52 p-3 rounded-xl border border-ivory-200 dark:border-obsidian-50 bg-ivory-50 dark:bg-obsidian-100 shadow-lg z-40">
-                        <p class="text-[10px] font-mono text-neutral-500 dark:text-neutral-400 mb-2">모달 배경색</p>
-                        <div class="flex items-center gap-2">
-                            <input type="color" id="modal-bg-color-input" value="#fcfbfa" class="h-8 w-8 p-0 border border-neutral-300 dark:border-neutral-700 rounded cursor-pointer bg-transparent">
-                            <button id="modal-bg-reset-btn" class="px-2 py-1 text-[10px] border border-neutral-300 dark:border-neutral-700 rounded">초기화</button>
-                        </div>
-                    </div>
-                </div>
                 <!-- 테마 스위처 (낮/밤) -->
                 <button id="theme-toggle" class="p-2 text-neutral-500 hover:text-ivory-900 dark:hover:text-obsidian-900 transition-colors focus:outline-none" aria-label="테마 전환">
                     <!-- 해 아이콘 (라이트 모드 상태에서 보임) -->
@@ -241,18 +227,6 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487a2.1 2.1 0 113 2.968L8.25 19.067 4 20l.933-4.25 11.929-11.263z"></path>
                             </svg>
                         </button>
-                        <button id="modal-bg-toggle-modal" class="p-1.5 text-neutral-500 focus:outline-none" aria-label="게시물 모달 배경색 설정" title="게시물 모달 배경색 설정">
-                            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
-                                <circle id="modal-bg-toggle-circle-modal" cx="12" cy="12" r="8" stroke="#737373" stroke-width="1.5" fill="#fcfbfa"></circle>
-                            </svg>
-                        </button>
-                        <div id="modal-bg-panel-modal" class="hidden absolute right-9 top-8 w-52 p-3 rounded-xl border border-ivory-200 dark:border-obsidian-50 bg-ivory-50 dark:bg-obsidian-100 shadow-lg z-[60]">
-                            <p class="text-[10px] font-mono text-neutral-500 dark:text-neutral-400 mb-2">모달 배경색</p>
-                            <div class="flex items-center gap-2">
-                                <input type="color" id="modal-bg-color-input-modal" value="#fcfbfa" class="h-8 w-8 p-0 border border-neutral-300 dark:border-neutral-700 rounded cursor-pointer bg-transparent">
-                                <button id="modal-bg-reset-btn-modal" class="px-2 py-1 text-[10px] border border-neutral-300 dark:border-neutral-700 rounded">초기화</button>
-                            </div>
-                        </div>
                         <button onclick="closeModal()" class="p-1.5 rounded-full hover:bg-ivory-200 dark:hover:bg-obsidian-50 text-neutral-500 dark:text-neutral-400 hover:text-ivory-900 dark:hover:text-obsidian-900 transition-colors">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
@@ -261,6 +235,7 @@
                     </div>
                 </div>
 
+                <div id="modal-view-section">
                 <!-- 시 상세 내용 본문 영역 -->
                 <div class="px-6 py-10 md:px-12 md:py-16 max-h-[calc(100vh-72px)] sm:max-h-[82vh] overflow-y-auto">
                     <!-- 제목 및 정보 -->
@@ -296,6 +271,40 @@
                     <div class="max-w-md mx-auto mb-2">
                         <div id="modal-tags" class="flex flex-wrap justify-center gap-2">
                             <!-- 여기에 태그 삽입 -->
+                        </div>
+                    </div>
+                </div>
+                </div>
+
+                <div id="modal-edit-section" class="hidden px-6 py-10 md:px-12 md:py-16 max-h-[calc(100vh-72px)] sm:max-h-[82vh] overflow-y-auto">
+                    <div class="max-w-xl mx-auto space-y-5">
+                        <div class="flex items-center justify-between gap-3">
+                            <div>
+                                <h3 class="font-serif text-2xl md:text-3xl font-bold tracking-wide hangul-serif text-neutral-900 dark:text-neutral-100">게시물 수정</h3>
+                                <p class="mt-1 text-xs text-neutral-500 dark:text-neutral-400 font-mono">현재 열려 있는 게시물을 바로 편집합니다.</p>
+                            </div>
+                            <button type="button" onclick="closeModalEditMode()" class="px-3 py-1.5 rounded-lg border border-neutral-300 dark:border-neutral-700 text-xs font-mono text-neutral-600 dark:text-neutral-300 hover:border-neutral-900 dark:hover:border-neutral-100 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors">수정 취소</button>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <input type="text" id="modal-edit-title" placeholder="제목" class="w-full bg-transparent border border-neutral-300 dark:border-neutral-700 rounded-lg p-2.5 text-xs focus:outline-none focus:border-neutral-900 dark:focus:border-neutral-100">
+                            <div class="grid grid-cols-2 gap-2">
+                                <input type="date" id="modal-edit-datetime-date" class="w-full bg-transparent border border-neutral-300 dark:border-neutral-700 rounded-lg p-2.5 text-xs focus:outline-none focus:border-neutral-900 dark:focus:border-neutral-100">
+                                <input type="time" id="modal-edit-datetime-time" step="60" class="w-full bg-transparent border border-neutral-300 dark:border-neutral-700 rounded-lg p-2.5 text-xs focus:outline-none focus:border-neutral-900 dark:focus:border-neutral-100">
+                            </div>
+                            <input type="text" id="modal-edit-tags" placeholder="태그 (쉼표 구분)" class="w-full bg-transparent border border-neutral-300 dark:border-neutral-700 rounded-lg p-2.5 text-xs focus:outline-none focus:border-neutral-900 dark:focus:border-neutral-100">
+                            <input type="text" id="modal-edit-instagram-link" placeholder="인스타링크" class="w-full bg-transparent border border-neutral-300 dark:border-neutral-700 rounded-lg p-2.5 text-xs focus:outline-none focus:border-neutral-900 dark:focus:border-neutral-100">
+                            <label class="md:col-span-2 flex items-center gap-2 text-xs text-neutral-600 dark:text-neutral-400 font-mono">
+                                <input type="checkbox" id="modal-edit-published" class="rounded border-neutral-300 dark:border-neutral-700" checked>
+                                공개 게시물
+                            </label>
+                            <div id="modal-admin-body-editor" contenteditable="true" class="md:col-span-2 w-full min-h-[180px] bg-transparent border border-neutral-300 dark:border-neutral-700 rounded-lg p-2.5 text-xs leading-relaxed focus:outline-none focus:border-neutral-900 dark:focus:border-neutral-100 text-left whitespace-pre-wrap" data-placeholder="본문"></div>
+                            <textarea id="modal-edit-commentary" placeholder="작가코멘트" rows="4" class="md:col-span-2 w-full bg-transparent border border-neutral-300 dark:border-neutral-700 rounded-lg p-2.5 text-xs focus:outline-none focus:border-neutral-900 dark:focus:border-neutral-100"></textarea>
+                        </div>
+
+                        <div class="flex flex-wrap gap-2">
+                            <button id="modal-edit-save-btn" onclick="saveModalEditPost()" class="bg-ivory-900 dark:bg-obsidian-900 text-ivory-100 dark:text-obsidian-200 hover:opacity-90 px-4 py-2 rounded-lg text-xs font-mono">저장</button>
+                            <button type="button" onclick="closeModalEditMode()" class="bg-transparent border border-neutral-300 dark:border-neutral-700 hover:border-neutral-900 dark:hover:border-neutral-100 px-4 py-2 rounded-lg text-xs font-mono">수정 취소</button>
                         </div>
                     </div>
                 </div>
@@ -506,11 +515,10 @@
         let adminDragImageEl = null;
         let isSavingAdminPost = false;
         let pendingEditRowId = null;
+        let activeAdminBodyEditorId = 'admin-body-editor';
 
         const DEFAULT_APPS_SCRIPT_URL = (window.APP_CONFIG && window.APP_CONFIG.APPS_SCRIPT_URL) || '';
         const APPS_SCRIPT_URL_KEY = 'apps-script-url';
-        const MODAL_BG_COLOR_KEY = 'poem-modal-bg-color';
-        const MODAL_BG_DEFAULT = '#fcfbfa';
         const ENTRY_SPLASH_DURATION_MS = 3000;
         const ENTRY_SPLASH_HIDE_DURATION_MS = 700;
 
@@ -542,8 +550,6 @@
             });
 
             syncAdminPasswordToggleUI();
-            initModalBackgroundControls();
-            applyModalBackgroundFromStorage();
             initScrollTopButton();
             initAdminEditorToolbar();
             initEntrySplash();
@@ -610,73 +616,6 @@
             const match = raw.match(/^(\d{4}-\d{2}-\d{2})/);
             if (match) return match[1];
             return raw.split(' ')[0] || raw;
-        }
-
-        function setModalBackgroundColor(colorValue, persist = true) {
-            const modalContent = document.getElementById('modal-content');
-            if (!modalContent) return;
-
-            const normalized = /^#[0-9a-fA-F]{6}$/.test(colorValue || '') ? colorValue : MODAL_BG_DEFAULT;
-            modalContent.style.backgroundColor = normalized;
-            document.querySelectorAll('#modal-bg-toggle-circle, #modal-bg-toggle-circle-modal').forEach((circle) => {
-                circle.setAttribute('fill', normalized);
-            });
-            document.querySelectorAll('#modal-bg-color-input, #modal-bg-color-input-modal').forEach((input) => {
-                input.value = normalized;
-            });
-            if (persist) {
-                localStorage.setItem(MODAL_BG_COLOR_KEY, normalized);
-            }
-        }
-
-        function resetModalBackgroundColor() {
-            localStorage.removeItem(MODAL_BG_COLOR_KEY);
-            setModalBackgroundColor(MODAL_BG_DEFAULT, false);
-        }
-
-        function applyModalBackgroundFromStorage() {
-            const saved = localStorage.getItem(MODAL_BG_COLOR_KEY) || MODAL_BG_DEFAULT;
-            setModalBackgroundColor(saved, false);
-        }
-
-        function bindModalBackgroundControl(toggleId, panelId, inputId, resetId) {
-            const toggleBtn = document.getElementById(toggleId);
-            const panel = document.getElementById(panelId);
-            const colorInput = document.getElementById(inputId);
-            const resetBtn = document.getElementById(resetId);
-            if (!toggleBtn || !panel || !colorInput || !resetBtn) return;
-
-            toggleBtn.addEventListener('click', (event) => {
-                event.stopPropagation();
-                const willOpen = panel.classList.contains('hidden');
-                document.querySelectorAll('#modal-bg-panel, #modal-bg-panel-modal').forEach((target) => {
-                    target.classList.add('hidden');
-                });
-                if (willOpen) panel.classList.remove('hidden');
-            });
-
-            colorInput.addEventListener('input', (event) => {
-                setModalBackgroundColor(event.target.value);
-            });
-
-            resetBtn.addEventListener('click', (event) => {
-                event.preventDefault();
-                resetModalBackgroundColor();
-            });
-        }
-
-        function initModalBackgroundControls() {
-            bindModalBackgroundControl('modal-bg-toggle', 'modal-bg-panel', 'modal-bg-color-input', 'modal-bg-reset-btn');
-            bindModalBackgroundControl('modal-bg-toggle-modal', 'modal-bg-panel-modal', 'modal-bg-color-input-modal', 'modal-bg-reset-btn-modal');
-
-            document.addEventListener('click', (event) => {
-                const panels = document.querySelectorAll('#modal-bg-panel, #modal-bg-panel-modal');
-                const toggles = document.querySelectorAll('#modal-bg-toggle, #modal-bg-toggle-modal');
-                const clickedInPanel = Array.from(panels).some((panel) => panel.contains(event.target));
-                const clickedToggle = Array.from(toggles).some((toggle) => toggle.contains(event.target));
-                if (clickedInPanel || clickedToggle) return;
-                panels.forEach((panel) => panel.classList.add('hidden'));
-            });
         }
 
         function toggleAdminPasswordVisibility() {
@@ -952,7 +891,11 @@
         }
 
         function getAdminBodyEditor() {
-            return document.getElementById('admin-body-editor');
+            return document.getElementById(activeAdminBodyEditorId) || document.getElementById('admin-body-editor');
+        }
+
+        function setActiveAdminBodyEditor(editorId) {
+            activeAdminBodyEditorId = editorId || 'admin-body-editor';
         }
 
         function setAdminBodyEditorContent(value) {
@@ -1131,6 +1074,7 @@
         let currentOpenRowId = null;
         let isPoemModalHistoryPushed = false;
         let isAdminModalHistoryPushed = false;
+        let isPoemModalEditMode = false;
 
         function escapeHtml(text) {
             return String(text || '')
@@ -1154,9 +1098,11 @@
 
             if (blockNodes.length) {
                 blockNodes.forEach((node) => {
-                    const raw = String(node.innerHTML || '').trim();
-                    const textOnly = String(node.textContent || '').replace(/\u00a0/g, ' ').trim();
-                    if (!textOnly || raw === '<br>' || raw === '<br/>') {
+                    const raw = String(node.innerHTML || '');
+                    const textOnly = String(node.textContent || '').replace(/\u00a0/g, ' ');
+                    const isOnlyWhitespace = textOnly.trim() === '';
+                    const normalizedRaw = raw.trim().toLowerCase();
+                    if (isOnlyWhitespace || normalizedRaw === '<br>' || normalizedRaw === '<br/>') {
                         lines.push('&nbsp;');
                     } else {
                         lines.push(raw);
@@ -1187,6 +1133,8 @@
             const poem = poemsData[index];
             if (!poem) return;
             currentOpenRowId = poem.rowId ? Number(poem.rowId) : null;
+            isPoemModalEditMode = false;
+            syncPoemModalMode();
             syncModalEditButtonVisibility();
 
             document.getElementById('modal-index').textContent = String(index + 1).padStart(2, '0');
@@ -1221,6 +1169,7 @@
             const { fromPopState = false } = options;
             if (!isPoemModalOpen()) return;
 
+            closeModalEditMode();
             document.getElementById('poem-modal').classList.add('hidden');
             document.body.style.overflow = '';
             currentOpenIndex = -1;
@@ -1239,6 +1188,104 @@
             const editBtn = document.getElementById('modal-edit-btn');
             if (!editBtn) return;
             editBtn.classList.toggle('hidden', !isAdminLoggedIn);
+        }
+
+        function syncPoemModalMode() {
+            const viewSection = document.getElementById('modal-view-section');
+            const editSection = document.getElementById('modal-edit-section');
+            if (!viewSection || !editSection) return;
+
+            viewSection.classList.toggle('hidden', isPoemModalEditMode);
+            editSection.classList.toggle('hidden', !isPoemModalEditMode);
+        }
+
+        function getModalEditBodyEditor() {
+            return document.getElementById('modal-admin-body-editor');
+        }
+
+        function setModalEditBodyEditorContent(value) {
+            const editor = getModalEditBodyEditor();
+            if (!editor) return;
+            editor.innerHTML = sanitizeBodyHtml(value || '') || '<div><br></div>';
+        }
+
+        function getModalEditBodyEditorContent() {
+            const editor = getModalEditBodyEditor();
+            if (!editor) return '';
+            return sanitizeBodyHtml(editor.innerHTML);
+        }
+
+        function getModalEditFormData() {
+            return normalizePoemSchema({
+                제목: document.getElementById('modal-edit-title').value.trim(),
+                본문: getModalEditBodyEditorContent(),
+                태그: document.getElementById('modal-edit-tags').value.trim(),
+                제작일시: composeDateTimeFromInputsFromModalEdit(),
+                작가코멘트: document.getElementById('modal-edit-commentary').value.trim(),
+                인스타링크: document.getElementById('modal-edit-instagram-link').value.trim(),
+                공개여부: document.getElementById('modal-edit-published').checked ? '공개' : '비공개'
+            });
+        }
+
+        function composeDateTimeFromInputsFromModalEdit() {
+            const dateValue = document.getElementById('modal-edit-datetime-date').value;
+            const timeValue = document.getElementById('modal-edit-datetime-time').value;
+            if (!dateValue || !timeValue) {
+                const now = getNowDateTimeParts();
+                return `${now.date} ${now.time}`;
+            }
+            return `${dateValue} ${timeValue}`;
+        }
+
+        function populateModalEditForm(poem) {
+            document.getElementById('modal-edit-title').value = poem.제목;
+            setModalEditBodyEditorContent(poem.본문);
+            document.getElementById('modal-edit-tags').value = poem.태그;
+            const parts = splitDateTimeForInputs(poem.제작일시);
+            document.getElementById('modal-edit-datetime-date').value = parts.date;
+            document.getElementById('modal-edit-datetime-time').value = parts.time;
+            document.getElementById('modal-edit-commentary').value = poem.작가코멘트;
+            document.getElementById('modal-edit-instagram-link').value = poem.인스타링크 || '';
+            document.getElementById('modal-edit-published').checked = poem.공개여부 === '공개';
+        }
+
+        function openModalEditMode() {
+            if (!isAdminLoggedIn || currentOpenRowId == null) return;
+            const poem = poemsData.find((item) => Number(item.rowId) === Number(currentOpenRowId));
+            if (!poem) return;
+
+            setActiveAdminBodyEditor('modal-admin-body-editor');
+            isPoemModalEditMode = true;
+            populateModalEditForm(normalizePoemSchema(poem));
+            syncPoemModalMode();
+
+            setTimeout(() => {
+                const input = document.getElementById('modal-edit-title');
+                if (input) input.focus();
+            }, 0);
+        }
+
+        function closeModalEditMode() {
+            if (!isPoemModalEditMode) return;
+            isPoemModalEditMode = false;
+            setActiveAdminBodyEditor('admin-body-editor');
+            syncPoemModalMode();
+        }
+
+        function renderModalViewFromPoem(poem) {
+            if (!poem) return;
+            document.getElementById('modal-index').textContent = String((currentOpenIndex ?? 0) + 1).padStart(2, '0');
+            document.getElementById('modal-title-text').textContent = poem.제목;
+            document.getElementById('modal-poem-body').innerHTML = renderPoemBodyWithLines(poem.본문);
+            document.getElementById('modal-date').textContent = formatDateOnly(poem.제작일시);
+            document.getElementById('modal-commentary').textContent = poem.작가코멘트 || '시인의 특별한 코멘트가 기록되지 않았습니다.';
+            const tagsContainer = document.getElementById('modal-tags');
+            const tags = parseTags(poem.태그);
+            tagsContainer.innerHTML = tags.map((t) => `
+                <span class="text-xs font-serif text-neutral-400 dark:text-neutral-500 font-mono italic">
+                    #${t}
+                </span>
+            `).join(' ');
         }
 
         document.getElementById('modal-overlay').addEventListener('click', closeModal);
@@ -1415,6 +1462,7 @@
         }
 
         function openAdminComposer() {
+            setActiveAdminBodyEditor('admin-body-editor');
             adminEditingIndex = -1;
             resetAdminForm();
             setAdminEditorSectionVisible(true);
@@ -1427,23 +1475,7 @@
         }
 
         function startEditCurrentPoem() {
-            if (currentOpenRowId == null) return;
-
-            const targetRowId = Number(currentOpenRowId);
-            pendingEditRowId = targetRowId;
-            closeModal();
-
-            const adminModal = document.getElementById('admin-modal');
-            if (adminModal && adminModal.classList.contains('hidden')) {
-                toggleAdminModal();
-            }
-
-            if (!isAdminLoggedIn) {
-                showToast('관리자 로그인 후 수정할 수 있습니다.');
-                return;
-            }
-
-            renderAdminPanelState();
+            openModalEditMode();
         }
 
         function getAdminFormData() {
@@ -1489,8 +1521,35 @@
             }
         }
 
+        async function saveModalEditPost() {
+            if (!isAdminLoggedIn || isSavingAdminPost || currentOpenRowId == null) return;
+            const formData = getModalEditFormData();
+            if (!formData.제목 || !String(formData.본문Plain || '').trim()) {
+                showToast('제목과 본문은 필수입니다.');
+                return;
+            }
+
+            isSavingAdminPost = true;
+            setAdminSaveLoading(true);
+            try {
+                await callApi('update', { ...formData, rowId: currentOpenRowId }, { withPassword: true });
+                await loadPoemsAndRender();
+
+                const updatedPoem = poemsData.find((item) => Number(item.rowId) === Number(currentOpenRowId)) || formData;
+                renderModalViewFromPoem(updatedPoem);
+                closeModalEditMode();
+                showToast('게시물이 수정되었습니다.');
+            } catch (error) {
+                showToast('저장 실패: 권한 또는 서버 설정을 확인하세요.');
+            } finally {
+                isSavingAdminPost = false;
+                setAdminSaveLoading(false);
+            }
+        }
+
         function resetAdminForm() {
             const now = getNowDateTimeParts();
+            setActiveAdminBodyEditor('admin-body-editor');
             document.getElementById('admin-title').value = '';
             setAdminBodyEditorContent('');
             document.getElementById('admin-tags').value = '';
@@ -1504,6 +1563,7 @@
 
         function editAdminPost(index) {
             const poem = normalizePoemSchema(poemsData[index]);
+            setActiveAdminBodyEditor('admin-body-editor');
             adminEditingIndex = index;
             setAdminEditorSectionVisible(true);
             document.getElementById('admin-title').value = poem.제목;
@@ -1520,8 +1580,11 @@
 
         function showAdminEditorToolbar() {
             const toolbar = document.getElementById('admin-editor-toolbar');
-            const modal = document.getElementById('admin-modal');
-            if (!toolbar || !isAdminLoggedIn || !modal || modal.classList.contains('hidden')) return;
+            const adminModal = document.getElementById('admin-modal');
+            const poemModal = document.getElementById('poem-modal');
+            const isAdminModalVisible = !!adminModal && !adminModal.classList.contains('hidden');
+            const isPoemEditVisible = isPoemModalEditMode && !!poemModal && !poemModal.classList.contains('hidden');
+            if (!toolbar || !isAdminLoggedIn || (!isAdminModalVisible && !isPoemEditVisible)) return;
             updateAdminEditorToolbarPosition();
             toolbar.classList.remove('opacity-0', 'translate-y-6', 'pointer-events-none');
             toolbar.classList.add('opacity-100', 'translate-y-0', 'pointer-events-auto');
@@ -1547,19 +1610,30 @@
         }
 
         function initAdminEditorToolbar() {
-            const bodyInput = getAdminBodyEditor();
             const toolbar = document.getElementById('admin-editor-toolbar');
-            if (bodyInput) {
-                bodyInput.addEventListener('focus', showAdminEditorToolbar);
-                bodyInput.addEventListener('click', showAdminEditorToolbar);
-                bodyInput.addEventListener('input', updateAdminEditorToolbarPosition);
-                bodyInput.addEventListener('blur', () => {
+            const bindEditor = (editorId) => {
+                const editor = document.getElementById(editorId);
+                if (!editor) return;
+
+                editor.addEventListener('focus', () => {
+                    setActiveAdminBodyEditor(editorId);
+                    showAdminEditorToolbar();
+                });
+                editor.addEventListener('click', () => {
+                    setActiveAdminBodyEditor(editorId);
+                    showAdminEditorToolbar();
+                });
+                editor.addEventListener('input', updateAdminEditorToolbarPosition);
+                editor.addEventListener('blur', () => {
                     setTimeout(() => {
-                        if (document.activeElement === bodyInput) return;
+                        if (document.activeElement === editor) return;
                         hideAdminEditorToolbar();
                     }, 80);
                 });
-            }
+            };
+
+            bindEditor('admin-body-editor');
+            bindEditor('modal-admin-body-editor');
 
             if (toolbar) {
                 toolbar.addEventListener('mousedown', (event) => {
